@@ -49,7 +49,10 @@ class PermissionManager: NSObject, CLLocationManagerDelegate {
     private var locationPermissionClosure: ((LocationPermissionStatus) -> Void)?
     func checkLocationPermission(closure: @escaping (LocationPermissionStatus) -> Void) {
         DispatchQueue.main.async {
-            switch CLLocationManager.authorizationStatus() {
+            // For iOS 14.0 and later, use authorizationStatus(for:)
+            let authorizationStatus = CLLocationManager().authorizationStatus
+
+            switch authorizationStatus {
             case .authorizedAlways, .authorizedWhenInUse:
                 closure(.granted)
             case .notDetermined:
@@ -60,6 +63,7 @@ class PermissionManager: NSObject, CLLocationManagerDelegate {
             }
         }
     }
+
     
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
         

@@ -24,27 +24,27 @@ import CombineExt
 
 public enum UserPreference {
     
-    fileprivate class _Base<Object> {
+    fileprivate class _Base<T> {  // Renamed Object to T
         
         let key: String
-        let publisher: CurrentValueRelay<Object?>
+        let publisher: CurrentValueRelay<T?>  // Renamed Object to T
         
         init(key: String) {
             self.key = key
             self.publisher = CurrentValueRelay(_Base.typeSafeGet(for: key))
         }
         
-        func get() -> Object? {
+        func get() -> T? {  // Renamed Object to T
             return _Base.typeSafeGet(for: key)
         }
         
-        func set(_ value: Object?) {
+        func set(_ value: T?) {  // Renamed Object to T
             guard let value = value else { remove(); return }
             UserDefaults.standard.set(value, forKey: key)
             publisher.accept(value)
         }
         
-        func setInitial(_ value: Object?) {
+        func setInitial(_ value: T?) {  // Renamed Object to T
             guard let value = value else { return }
             let initialSet = _Base<Bool>(key: key + ".initialValueSet")
             guard !(initialSet.get() ?? false) else { return }
@@ -57,25 +57,25 @@ public enum UserPreference {
             publisher.accept(nil)
         }
         
-        private static func typeSafeGet<Object>(for key: String) -> Object? {
-            return UserDefaults.standard.object(forKey: key) as? Object
+        private static func typeSafeGet<T>(for key: String) -> T? {  // Renamed Object to T
+            return UserDefaults.standard.object(forKey: key) as? T
         }
         
     }
     
-    public class Required<Object> {
+    public class Required<T> {  // Renamed Object to T
         
-        private let _base: _Base<Object>
+        private let _base: _Base<T>  // Renamed Object to T
         public var key: String { _base.key }
-        public let defaultValue: Object
+        public let defaultValue: T
         
-        init(key: String, defaultValue: Object, initialValue: Object? = nil) {
+        init(key: String, defaultValue: T, initialValue: T? = nil) {
             self._base = _Base(key: key)
             self.defaultValue = defaultValue
             self._base.setInitial(initialValue)
         }
         
-        var value: Object {
+        var value: T {
             get { _base.get() ?? defaultValue }
             set { _base.set(newValue) }
         }
@@ -84,7 +84,7 @@ public enum UserPreference {
             _base.remove()
         }
         
-        public var publisher: AnyPublisher<Object, Never> {
+        public var publisher: AnyPublisher<T, Never> {
             _base.publisher
                 .compactMap { [weak self] value in
                     guard let self else { return nil }
@@ -93,19 +93,19 @@ public enum UserPreference {
         }
     }
     
-    public class Optional<Object> {
+    public class Optional<T> {  // Renamed Object to T
         
-        private let _base: _Base<Object>
+        private let _base: _Base<T>  // Renamed Object to T
         public var key: String { _base.key }
-        public let defaultValue: Object?
+        public let defaultValue: T?
         
-        public init(key: String, defaultValue: Object? = nil, initialValue: Object? = nil) {
+        public init(key: String, defaultValue: T? = nil, initialValue: T? = nil) {
             self._base = _Base(key: key)
             self.defaultValue = defaultValue
             self._base.setInitial(initialValue)
         }
         
-        public var value: Object? {
+        public var value: T? {
             get { _base.get() ?? defaultValue }
             set { _base.set(newValue) }
         }
@@ -114,7 +114,7 @@ public enum UserPreference {
             _base.remove()
         }
         
-        public var publisher: AnyPublisher<Object?, Never> {
+        public var publisher: AnyPublisher<T?, Never> {
             _base.publisher
                 .map { [weak self] value in
                     return value ?? self?.defaultValue

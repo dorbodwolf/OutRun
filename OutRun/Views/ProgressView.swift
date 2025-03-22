@@ -32,7 +32,7 @@ struct ProgressView: View {
                     .foregroundColor(index > progress ? .secondaryBackground : .accentColor)
                     .frame(height: 4)
                     .clipShape(Capsule())
-                    .animation(.default)
+                    .animation(.default, value: progress) // Use animation with value: progress
             }
         }
     }

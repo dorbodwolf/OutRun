@@ -1,5 +1,5 @@
 project 'OutRun.xcodeproj'
-platform :ios, '13.0'
+platform :ios, '16.0'
 
 def ui_pods
   pod 'SnapKit'
@@ -8,10 +8,11 @@ def ui_pods
 end
 
 def data_pods
-  pod 'Cache'
+  pod 'Cache', '~> 6.0'
   pod 'CombineExt'
-  pod 'CoreStore'
-  pod 'CoreGPX'
+
+  pod 'CoreStore', '~> 9.1.0'
+  pod 'CoreGPX', '~> 0.9.0'
 end
 
 target 'OutRun' do

@@ -48,7 +48,7 @@ struct PermissionView: View {
                 .padding(.horizontal, 16)
                 .background(granted ? Color.accentColor : Color.gray)
                 .clipShape(Capsule())
-                .animation(.easeOut)
+                .animation(.easeOut, value: granted) // 这里使用了 `animation(_:value:)`
             }
         }
     }
@@ -75,3 +75,4 @@ struct SetupPermissionView_Previews: PreviewProvider {
         )
     }
 }
+

@@ -40,7 +40,7 @@ struct LS {
         }
         
         // checking if trademark applies and app name needs to be changed
-        if Locale.current.regionCode?.lowercased() == "gb" {
+        if Locale.current.region?.identifier.lowercased() == "gb" {
             return localizedString.replacingOccurrences(of: "OutRun", with: "Out-Run")
         }
         
