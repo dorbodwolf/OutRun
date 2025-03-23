@@ -36,7 +36,7 @@ struct RootCoordinatorView: View {
             case .setup:
                 SetupCoordinatorView(viewModel: viewModel.setupCoordinatorViewModel)
             case .main:
-                Text("Main App")
+                MainScreen() // Navigate to the new main screen
                 Button("Reset Setup") {
                     UserPreferences.isSetUp.value = false
                 }
